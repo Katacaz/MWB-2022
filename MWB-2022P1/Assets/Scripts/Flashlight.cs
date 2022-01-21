@@ -6,7 +6,7 @@ public class Flashlight : MonoBehaviour
 {
     
     public bool flEnabled;
-    private float battery;
+    public float battery { get; private set; }
     public float maxBattery = 100f;
     public float batteryDrain = 1f;
     [SerializeField] private GameObject lightObj;

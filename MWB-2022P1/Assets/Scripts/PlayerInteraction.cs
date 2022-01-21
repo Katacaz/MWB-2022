@@ -22,12 +22,16 @@ public class PlayerInteraction : MonoBehaviour
         {
             if (hit.collider.gameObject.TryGetComponent(out Interactable interactable))
             {
+
                 objectInSight = interactable;
                 
             } else
             {
                 objectInSight = null;
             }
+        } else
+        {
+            objectInSight = null;
         }
     }
 

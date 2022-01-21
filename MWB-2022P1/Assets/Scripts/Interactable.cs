@@ -11,6 +11,10 @@ public class Interactable : MonoBehaviour
     public bool removeItemOnUse;
 
     private Inventory inv;
+
+    public string interactPrompt;
+
+    public string missingItemPrompt;
     // Start is called before the first frame update
     void Start()
     {
@@ -44,5 +48,22 @@ public class Interactable : MonoBehaviour
             onInteract.Invoke();
         }
         
+    }
+
+    public bool CanInteract()
+    {
+        bool result = false;
+        if (requiredItem != null)
+        {
+            if (inv.InventoryContains(requiredItem))
+            {
+                result = true;
+            }
+        } else
+        {
+            result = true;
+        }
+
+        return result;
     }
 }
