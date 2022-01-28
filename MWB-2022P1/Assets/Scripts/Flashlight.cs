@@ -10,9 +10,15 @@ public class Flashlight : MonoBehaviour
     public float maxBattery = 100f;
     public float batteryDrain = 1f;
     [SerializeField] private GameObject lightObj;
+    public bool increaseBatteryDrain;
+    public float increaseDrainAmount = 1f;
 
     public bool recharging;
     public float rechargeAmount = 20f;
+
+    public float flashlightDistance = 10f;
+
+    public LayerMask lightRecieverLayer;
     // Start is called before the first frame update
     void Start()
     {
@@ -43,7 +49,25 @@ public class Flashlight : MonoBehaviour
         {
             if (battery > 0)
             {
-                battery -= batteryDrain * Time.deltaTime;
+                if (increaseBatteryDrain)
+                {
+                    battery -= increaseDrainAmount * Time.deltaTime;
+                }
+                else
+                {
+                    battery -= batteryDrain * Time.deltaTime;
+                }
+            }
+            //Raycast Light for Recievers
+            RaycastHit hit;
+            if (Physics.Raycast(lightObj.transform.position, lightObj.transform.forward, out hit, flashlightDistance, lightRecieverLayer))
+            {
+                if (hit.collider.gameObject.TryGetComponent(out Light_Reciever reciever))
+                {
+
+                    reciever.OnLightHit();
+
+                }                
             }
         }
     }
@@ -64,5 +88,10 @@ public class Flashlight : MonoBehaviour
     public void SetRecharge(bool setting)
     {
         recharging = setting;
+    }
+
+    public void OnDrawGizmosSelected()
+    {
+        Debug.DrawLine(lightObj.transform.position, lightObj.transform.position + lightObj.transform.forward * flashlightDistance, Color.red);
     }
 }
